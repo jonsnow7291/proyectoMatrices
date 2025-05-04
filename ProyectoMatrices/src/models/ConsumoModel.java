@@ -1,6 +1,6 @@
 package models;
 
-public class ConsumoAnualModel {
+public class ConsumoModel {
     private int años;
     private int meses;
     private int dias;
@@ -8,7 +8,7 @@ public class ConsumoAnualModel {
     int[][][][] consumoTotal;
     
     
-    public ConsumoAnualModel(int años, int meses,  int dias , int horas){
+    public ConsumoModel(int años, int meses,  int dias , int horas){
         this.años = años;
         this.meses = meses;
         this.dias = dias;
