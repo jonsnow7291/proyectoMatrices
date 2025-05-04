@@ -1,4 +1,5 @@
-import models.ConsumoAnualModel;
+package controller;
+import models.ConsumoModel;
 
 public class consumoController{
 
@@ -7,7 +8,7 @@ public class consumoController{
         int meses = 1;
         int dias = 1;
         int horas = 1;
-        ConsumoAnualModel  ConsumoCliente = new ConsumoAnualModel(años,meses,dias,horas);
+        ConsumoModel  ConsumoCliente = new ConsumoModel(años,meses,dias,horas);
         
         System.out.println("");
 
