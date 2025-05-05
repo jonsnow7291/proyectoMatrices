@@ -1,0 +1,112 @@
+package model;
+
+import java.util.*;
+
+public class Consumo {
+    private final int[][][] consumo; // [mes][día][hora] en kWh
+    private final int[][][] costo;   // [mes][día][hora] en pesos
+    private final int[] diasPorMes = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+    public Consumo() {
+        consumo = new int[12][][];
+        costo = new int[12][][];
+        Random random = new Random();
+
+        for (int mes = 0; mes < 12; mes++) {
+            int dias = diasPorMes[mes];
+            consumo[mes] = new int[dias][24];
+            costo[mes] = new int[dias][24];
+
+            for (int dia = 0; dia < dias; dia++) {
+                for (int hora = 0; hora < 24; hora++) {
+                    int kw = 1 + random.nextInt(5); // consumo aleatorio entre 1 y 5 kWh
+                    consumo[mes][dia][hora] = kw;
+                    costo[mes][dia][hora] = calcularCosto(hora, kw);
+                }
+            }
+        }
+    }
+
+    private int calcularCosto(int hora, int kw) {
+        Random random = new Random();
+        int precioPorKw;
+        if (hora >= 0 && hora <= 6) {
+            precioPorKw = 10 + random.nextInt(91); // 10–100
+        } else if (hora >= 7 && hora <= 17) {
+            precioPorKw = 500 + random.nextInt(1001); // 500–1500
+        } else {
+            precioPorKw = 300 + random.nextInt(701); // 300–1000
+        }
+        return kw * precioPorKw;
+    }
+
+    public int[] getConsumoPorHora(int mes, int dia) {
+        return consumo[mes][dia];
+    }
+
+    public int[] getCostoPorHora(int mes, int dia) {
+        return costo[mes][dia];
+    }
+
+    public int getConsumoDia(int mes, int dia) {
+        return Arrays.stream(consumo[mes][dia]).sum();
+    }
+
+    public int getCostoDia(int mes, int dia) {
+        return Arrays.stream(costo[mes][dia]).sum();
+    }
+
+    public int getConsumoMes(int mes) {
+        int total = 0;
+        for (int dia = 0; dia < consumo[mes].length; dia++) {
+            total += getConsumoDia(mes, dia);
+        }
+        return total;
+    }
+
+    public int getCostoMes(int mes) {
+        int total = 0;
+        for (int dia = 0; dia < costo[mes].length; dia++) {
+            total += getCostoDia(mes, dia);
+        }
+        return total;
+    }
+
+    public int getConsumoAnual() {
+        int total = 0;
+        for (int mes = 0; mes < 12; mes++) {
+            total += getConsumoMes(mes);
+        }
+        return total;
+    }
+
+    public int getCostoAnual() {
+        int total = 0;
+        for (int mes = 0; mes < 12; mes++) {
+            total += getCostoMes(mes);
+        }
+        return total;
+    }
+
+    public int getDiasDelMes(int mes) {
+        return diasPorMes[mes];
+    }
+
+    public void modificarConsumoHora(int mes, int dia, int hora, int nuevoKw) {
+        consumo[mes][dia][hora] = nuevoKw;
+        costo[mes][dia][hora] = calcularCosto(hora, nuevoKw);
+    }
+    public void generarDatos() {
+        Random random = new Random();
+        for (int mes = 0; mes < 12; mes++) {
+            int dias = diasPorMes[mes];
+            for (int dia = 0; dia < dias; dia++) {
+                for (int hora = 0; hora < 24; hora++) {
+                    int kw = 1 + random.nextInt(5); // consumo aleatorio entre 1 y 5 kWh
+                    consumo[mes][dia][hora] = kw;
+                    costo[mes][dia][hora] = calcularCosto(hora, kw);
+                }
+            }
+        }
+    }
+}
