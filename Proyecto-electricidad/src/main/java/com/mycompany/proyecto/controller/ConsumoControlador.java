@@ -104,7 +104,7 @@ public class ConsumoControlador {
         Cliente c = sistema.buscarCliente(id);
         if (c != null) {
             for (Registrador r : c.getRegistradores()) {
-                r.getConsumo().generarDatos(); // regenerar datos
+                r.getConsumo().generarDatos();
             }
             System.out.println("Consumo generado.");
         } else {
@@ -122,34 +122,54 @@ public class ConsumoControlador {
     }
 
     private void modificarConsumoHora() {
-        System.out.print("ID cliente: ");
-        String id = scanner.nextLine();
-        Cliente c = sistema.buscarCliente(id);
-        if (c == null) {
-            System.out.println("Cliente no encontrado.");
-            return;
-        }
-
-        System.out.print("ID registrador: ");
-        String idReg = scanner.nextLine();
-        Registrador r = c.buscarRegistrador(idReg);
-        if (r == null) {
-            System.out.println("Registrador no encontrado.");
-            return;
-        }
-
-        System.out.print("Mes (0=enero...11=diciembre): ");
-        int mes = scanner.nextInt();
-        System.out.print("Día (0–30): ");
-        int dia = scanner.nextInt();
-        System.out.print("Hora (0–23): ");
-        int hora = scanner.nextInt();
-        System.out.print("Nuevo consumo (kWh): ");
-        int kw = scanner.nextInt();
-
-        r.getConsumo().modificarConsumoHora(mes, dia, hora, kw);
-        System.out.println("Consumo actualizado.");
+    System.out.print("ID cliente: ");
+    String id = scanner.nextLine();
+    Cliente c = sistema.buscarCliente(id);
+    if (c == null) {
+        System.out.println("Cliente no encontrado.");
+        return;
     }
+
+    System.out.print("ID registrador: ");
+    String idReg = scanner.nextLine();
+    Registrador r = c.buscarRegistrador(idReg);
+    if (r == null) {
+        System.out.println("Registrador no encontrado.");
+        return;
+    }
+
+    System.out.print("Mes (1=enero...12=diciembre): ");
+    int mes = scanner.nextInt();
+    if (mes < 1 || mes > 12) {
+        System.out.println("Mes inválido.");
+        return;
+    }
+
+    int diasDelMes = r.getConsumo().getDiasDelMes(mes);
+    int dia;
+    do {
+        System.out.print("Día (1–" + diasDelMes + "): ");
+        dia = scanner.nextInt();
+        if (dia < 1 || dia > diasDelMes) {
+            System.out.println("Día inválido para este mes.");
+        }
+    } while (dia < 1 || dia > diasDelMes);
+
+    int hora;
+    do {
+        System.out.print("Hora (0–23): ");
+        hora = scanner.nextInt();
+        if (hora < 0 || hora > 23) {
+            System.out.println("Hora inválida.");
+        }
+    } while (hora < 0 || hora > 23);
+
+    System.out.print("Nuevo consumo (kWh): ");
+    int kw = scanner.nextInt();
+
+    r.getConsumo().modificarConsumoHora(mes, dia - 1, hora, kw);
+    System.out.println("Consumo actualizado.");
+}
 
     private void generarFactura() {
         System.out.print("ID cliente: ");
@@ -160,12 +180,23 @@ public class ConsumoControlador {
             return;
         }
 
-        System.out.print("Mes (0=enero...11=diciembre): ");
+        System.out.print("Mes (1=enero...12=diciembre): ");
         int mes = scanner.nextInt();
-        scanner.nextLine();
+        if (mes < 1 || mes > 12) {
+            System.out.println("Mes inválido.");
+            return;
+        }
+        String[] nombresMes = {
+            "enero", "febrero", "marzo", "abril", "mayo", "junio",
+            "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
+        };
+        String nombreMes = nombresMes[mes - 1];
 
+        scanner.nextLine();
         System.out.print("Nombre archivo PDF (sin .pdf): ");
         String nombreArchivo = scanner.nextLine();
+
+        // Ajuste: se pasa también el nombre del mes al generador
         FacturaGenerator.generarFactura(c, mes, nombreArchivo + ".pdf");
     }
 }
