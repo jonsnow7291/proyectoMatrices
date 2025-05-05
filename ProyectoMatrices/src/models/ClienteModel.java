@@ -8,7 +8,7 @@ public class ClienteModel {
     private String direccionFisica;
     private String nombreCompleto;
     private String correoElectronico;
-    private int codigoRegistrador;
+
 
     public ClienteModel(int nIdentificacion, String tIdentificacion, String direccion, String nombre, String correo,
             String municipio, String departamento) {
@@ -19,10 +19,6 @@ public class ClienteModel {
         this.direccionFisica = direccion;
         this.nombreCompleto = nombre;
         this.correoElectronico = correo;
-    }
-
-    public void setRegistrador(int registrador) {
-        this.codigoRegistrador = registrador;
     }
 
     public void UpdateClient(String direccion, String nombre, String correo,String municipio, String departamento ) {
@@ -41,7 +37,6 @@ public class ClienteModel {
         clienteArray[4] = direccionFisica;
         clienteArray[5] = nombreCompleto;
         clienteArray[6] = correoElectronico;
-        clienteArray[7] = String.valueOf(codigoRegistrador);
         return clienteArray;
     }
 
