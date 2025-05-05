@@ -2,6 +2,7 @@ package model;
 
 import java.util.*;
 
+
 public class Consumo {
     private final int[][][] consumo; // [mes][día][hora] en kWh
     private final int[][][] costo;   // [mes][día][hora] en pesos
@@ -41,32 +42,38 @@ public class Consumo {
     }
 
     public int[] getConsumoPorHora(int mes, int dia) {
-        return consumo[mes][dia];
+        return consumo[mes - 1][dia];
     }
 
     public int[] getCostoPorHora(int mes, int dia) {
-        return costo[mes][dia];
+        return costo[mes - 1][dia];
     }
 
     public int getConsumoDia(int mes, int dia) {
-        return Arrays.stream(consumo[mes][dia]).sum();
+        return Arrays.stream(consumo[mes - 1][dia]).sum();
     }
 
     public int getCostoDia(int mes, int dia) {
-        return Arrays.stream(costo[mes][dia]).sum();
+        return Arrays.stream(costo[mes - 1][dia]).sum();
     }
 
     public int getConsumoMes(int mes) {
+        if (mes < 1 || mes > 12) {
+            throw new IllegalArgumentException("Mes inválido: debe estar entre 1 y 12");
+        }
         int total = 0;
-        for (int dia = 0; dia < consumo[mes].length; dia++) {
+        for (int dia = 0; dia < consumo[mes - 1].length; dia++) {
             total += getConsumoDia(mes, dia);
         }
         return total;
     }
 
     public int getCostoMes(int mes) {
+        if (mes < 1 || mes > 12) {
+            throw new IllegalArgumentException("Mes inválido: debe estar entre 1 y 12");
+        }
         int total = 0;
-        for (int dia = 0; dia < costo[mes].length; dia++) {
+        for (int dia = 0; dia < costo[mes - 1].length; dia++) {
             total += getCostoDia(mes, dia);
         }
         return total;
@@ -74,7 +81,7 @@ public class Consumo {
 
     public int getConsumoAnual() {
         int total = 0;
-        for (int mes = 0; mes < 12; mes++) {
+        for (int mes = 1; mes <= 12; mes++) {
             total += getConsumoMes(mes);
         }
         return total;
@@ -82,27 +89,37 @@ public class Consumo {
 
     public int getCostoAnual() {
         int total = 0;
-        for (int mes = 0; mes < 12; mes++) {
+        for (int mes = 1; mes <= 12; mes++) {
             total += getCostoMes(mes);
         }
         return total;
     }
 
+    public void verConsumoDia(int mes, int dia) {
+        for (int hora = 0; hora < 24; hora++) {
+            System.out.printf("Hora %02d: %d kWh\n", hora, consumo[mes - 1][dia][hora]);
+        }
+    }
+
     public int getDiasDelMes(int mes) {
-        return diasPorMes[mes];
+        if (mes < 1 || mes > 12) {
+            throw new IllegalArgumentException("Mes inválido: debe estar entre 1 y 12");
+        }
+        return diasPorMes[mes - 1];
     }
 
     public void modificarConsumoHora(int mes, int dia, int hora, int nuevoKw) {
-        consumo[mes][dia][hora] = nuevoKw;
-        costo[mes][dia][hora] = calcularCosto(hora, nuevoKw);
+        consumo[mes - 1][dia][hora] = nuevoKw;
+        costo[mes - 1][dia][hora] = calcularCosto(hora, nuevoKw);
     }
+
     public void generarDatos() {
         Random random = new Random();
         for (int mes = 0; mes < 12; mes++) {
             int dias = diasPorMes[mes];
             for (int dia = 0; dia < dias; dia++) {
                 for (int hora = 0; hora < 24; hora++) {
-                    int kw = 1 + random.nextInt(5); // consumo aleatorio entre 1 y 5 kWh
+                    int kw = 1 + random.nextInt(5);
                     consumo[mes][dia][hora] = kw;
                     costo[mes][dia][hora] = calcularCosto(hora, kw);
                 }
