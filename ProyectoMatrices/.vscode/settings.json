@@ -1,9 +1,0 @@
-{
-  "java.project.sourcePaths": ["src"],
-  "java.project.outputPath": "bin",
-  "java.project.referencedLibraries": ["lib/**/*.jar"],
-  "workbench.colorCustomizations": {
-    "minimap.background": "#00000000",
-    "scrollbar.shadow": "#00000000"
-  }
-}
