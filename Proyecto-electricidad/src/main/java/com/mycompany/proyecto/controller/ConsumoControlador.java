@@ -46,6 +46,7 @@ public class ConsumoControlador {
     }
 
     private void crearCliente() {
+        //? recolectamos los datos del cliente
         System.out.print("ID cliente: ");
         String id = scanner.nextLine();
         System.out.print("TipoIdentificación: ");
@@ -58,16 +59,19 @@ public class ConsumoControlador {
         String direccion = scanner.nextLine();
         System.out.print("Correo: ");
         String correo = scanner.nextLine();
+        // ? Hacemos manejo de excepciones
         try {
             sistema.agregarCliente(new Cliente(id, nombre, direccion, tIdent, correo, ciudad));
+            System.out.println("Cliente creado.");
         } catch (Exception e) {
             System.out.println("Error al crear cliente: " + e.getMessage());
         }
-        System.out.println("Cliente creado.");
     }
 
     private void editarCliente() {
+        // ? aqui inicializamos la variable por default de registro
         boolean registrado = false;
+        //?recolectamos los datos a editar del cliente
         System.out.print("ID cliente a editar: ");
         String id = scanner.nextLine();
         System.out.print("Ingrese su Nuevo nombre: ");
@@ -78,6 +82,7 @@ public class ConsumoControlador {
         String ciudad = scanner.nextLine();
         System.out.print("Ingrese su Nueva Correo: ");
         String correo = scanner.nextLine();
+        // ? Hacemos manejo de excepciones
         try {
             registrado = sistema.editarCliente(id, nombre, direccion, correo, ciudad);
         } catch (Exception e) {
@@ -91,17 +96,39 @@ public class ConsumoControlador {
     }
 
     private void crearRegistrador() {
+        // ? aqui inicializamos las variables de ubicacion
+        String ubicacion = "Desconocida";
+        String direccion = "Desconocida";
+        String ciudad = "Desconocida";
+        //?recolectamos los datos a registrar del registrador
         System.out.print("ID cliente: ");
         String idCliente = scanner.nextLine();
         System.out.print("ID registrador: ");
         String idReg = scanner.nextLine();
-        System.out.print("Ubicación: ");
-        String ubicacion = scanner.nextLine();
+        System.out.println("La ubicacion se asociara al cliente??");
+        System.out.println("1. Si");
+        System.out.println("2. No");
+        int respuesta = scanner.nextInt();
+        //? validamos  que el registrador se asocie al cliente o no por lo tanto asociando su ubicacion
+        if (respuesta == 2) {
+            System.out.print("Ubicación: ");
+            ubicacion = scanner.nextLine();
+        } else if (respuesta == 1) {
+            Cliente client = sistema.buscarCliente(idCliente);
+            if (client != null) {
+                direccion = client.getDireccion();
+                ciudad = client.getCiudad();
+                ubicacion = direccion + ", " + ciudad;
+            } else {
+                System.out.println("Cliente no encontrado. Se asignará ubicación por defecto.");
+            }
+        }
         boolean ok = sistema.agregarRegistradorACliente(idCliente, new Registrador(idReg, ubicacion));
         System.out.println(ok ? "Registrador agregado." : "Cliente no encontrado.");
     }
 
     private void editarRegistrador() {
+        //? recolectamos los datos a editar del registrador
         System.out.print("ID cliente: ");
         String idCliente = scanner.nextLine();
         System.out.print("ID registrador: ");

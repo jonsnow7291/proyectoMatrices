@@ -2,7 +2,7 @@ package com.mycompany.proyecto.model;
 
 
 public class Registrador {
-    private final String id; // Número único
+    private final String id; 
     private String ubicacion;
     private Consumo consumo;
 

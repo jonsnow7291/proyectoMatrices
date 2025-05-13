@@ -12,7 +12,7 @@ public class Cliente {
     private String CorreoElectronico;
     private String Ciudad;
 
-    public Cliente(String id, String nombre, String direccion, String TipoId, String CorreoElectronico,String ciudad) {
+    public Cliente(String id, String nombre, String direccion, String TipoId, String CorreoElectronico, String ciudad) {
         this.id = id;
         this.nombre = nombre;
         this.TipoId = TipoId;
@@ -54,7 +54,7 @@ public class Cliente {
         return TipoId;
     }
 
-    public String getCiudad(String ciudad) {
+    public String getCiudad() {
         return Ciudad;
     }
 
@@ -62,12 +62,12 @@ public class Cliente {
         this.Ciudad = ciudad;
     }
 
-    public void SetCorreo(String correo) {
-        this.CorreoElectronico = correo;
-    }
-
     public String getCorreo() {
         return CorreoElectronico;
+    }
+
+    public void SetCorreo(String correo) {
+        this.CorreoElectronico = correo;
     }
 
     public Registrador buscarRegistrador(String idReg) {
