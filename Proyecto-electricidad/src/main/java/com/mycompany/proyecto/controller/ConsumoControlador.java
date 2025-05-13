@@ -48,24 +48,42 @@ public class ConsumoControlador {
     private void crearCliente() {
         System.out.print("ID cliente: ");
         String id = scanner.nextLine();
+        System.out.print("TipoIdentificación: ");
+        String tIdent = scanner.nextLine();
         System.out.print("Nombre: ");
         String nombre = scanner.nextLine();
+        System.out.print("Ciudad: ");
+        String ciudad = scanner.nextLine();
         System.out.print("Dirección: ");
         String direccion = scanner.nextLine();
-
-        sistema.agregarCliente(new Cliente(id, nombre, direccion));
+        System.out.print("Correo: ");
+        String correo = scanner.nextLine();
+        try {
+            sistema.agregarCliente(new Cliente(id, nombre, direccion, tIdent, correo, ciudad));
+        } catch (Exception e) {
+            System.out.println("Error al crear cliente: " + e.getMessage());
+        }
         System.out.println("Cliente creado.");
     }
 
     private void editarCliente() {
+        boolean registrado = false;
         System.out.print("ID cliente a editar: ");
         String id = scanner.nextLine();
-        System.out.print("Nuevo nombre: ");
+        System.out.print("Ingrese su Nuevo nombre: ");
         String nombre = scanner.nextLine();
-        System.out.print("Nueva dirección: ");
+        System.out.print("Ingrese su Nueva dirección: ");
         String direccion = scanner.nextLine();
-
-        if (sistema.editarCliente(id, nombre, direccion)) {
+        System.out.print("Ingrese su Nueva Ciudad: ");
+        String ciudad = scanner.nextLine();
+        System.out.print("Ingrese su Nueva Correo: ");
+        String correo = scanner.nextLine();
+        try {
+            registrado = sistema.editarCliente(id, nombre, direccion, correo, ciudad);
+        } catch (Exception e) {
+            System.out.println("Error al editar cliente: " + e.getMessage());
+        }
+        if (registrado) {
             System.out.println("Cliente actualizado.");
         } else {
             System.out.println("Cliente no encontrado.");
@@ -79,7 +97,6 @@ public class ConsumoControlador {
         String idReg = scanner.nextLine();
         System.out.print("Ubicación: ");
         String ubicacion = scanner.nextLine();
-
         boolean ok = sistema.agregarRegistradorACliente(idCliente, new Registrador(idReg, ubicacion));
         System.out.println(ok ? "Registrador agregado." : "Cliente no encontrado.");
     }

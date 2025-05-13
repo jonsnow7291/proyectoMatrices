@@ -4,15 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Cliente {
-    private final String id; // Número único de identificación
+    private final String id;
+    private String TipoId;
     private String nombre;
     private String direccion;
     private List<Registrador> registradores;
+    private String CorreoElectronico;
+    private String Ciudad;
 
-    public Cliente(String id, String nombre, String direccion) {
+    public Cliente(String id, String nombre, String direccion, String TipoId, String CorreoElectronico,String ciudad) {
         this.id = id;
         this.nombre = nombre;
+        this.TipoId = TipoId;
+        this.CorreoElectronico = CorreoElectronico;
         this.direccion = direccion;
+        this.Ciudad = ciudad;
         this.registradores = new ArrayList<>();
     }
 
@@ -44,9 +50,30 @@ public class Cliente {
         this.registradores.add(r);
     }
 
+    public String getTipoId() {
+        return TipoId;
+    }
+
+    public String getCiudad(String ciudad) {
+        return Ciudad;
+    }
+
+    public void setCiudad(String ciudad) {
+        this.Ciudad = ciudad;
+    }
+
+    public void SetCorreo(String correo) {
+        this.CorreoElectronico = correo;
+    }
+
+    public String getCorreo() {
+        return CorreoElectronico;
+    }
+
     public Registrador buscarRegistrador(String idReg) {
         for (Registrador r : registradores) {
-            if (r.getId().equals(idReg)) return r;
+            if (r.getId().equals(idReg))
+                return r;
         }
         return null;
     }

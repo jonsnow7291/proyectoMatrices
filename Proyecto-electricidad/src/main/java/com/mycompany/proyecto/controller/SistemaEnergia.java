@@ -27,11 +27,13 @@ public class SistemaEnergia {
     }
 
     // Editar cliente (excepto ID)
-    public boolean editarCliente(String id, String nuevoNombre, String nuevaDireccion) {
+    public boolean editarCliente(String id, String nuevoNombre, String nuevaDireccion, String nuevoCorreo, String nuevaCiudad) {
         Cliente c = buscarCliente(id);
         if (c != null) {
             c.setNombre(nuevoNombre);
             c.setDireccion(nuevaDireccion);
+            c.setCiudad(nuevaCiudad);
+            c.SetCorreo(nuevoCorreo);
             return true;
         }
         return false;
