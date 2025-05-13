@@ -1,7 +1,7 @@
-package controller;
+package com.mycompany.proyecto.controller;
 
-import model.Cliente;
-import model.Registrador;
+import com.mycompany.proyecto.model.Cliente;
+import com.mycompany.proyecto.model.Registrador;
 
 import java.util.ArrayList;
 import java.util.List;

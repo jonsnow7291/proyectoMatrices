@@ -1,6 +1,6 @@
-package controller;
+package com.mycompany.proyecto.controller;
 
-import model.*;
+import com.mycompany.proyecto.model.*;
 
 import java.util.Scanner;
 
@@ -27,7 +27,8 @@ public class ConsumoControlador {
             System.out.println("8. Generar factura (.pdf)");
             System.out.println("9. Salir");
             System.out.print("Seleccione opción: ");
-            opcion = scanner.nextInt(); scanner.nextLine();
+            opcion = scanner.nextInt();
+            scanner.nextLine();
 
             switch (opcion) {
                 case 1 -> crearCliente();
@@ -122,54 +123,54 @@ public class ConsumoControlador {
     }
 
     private void modificarConsumoHora() {
-    System.out.print("ID cliente: ");
-    String id = scanner.nextLine();
-    Cliente c = sistema.buscarCliente(id);
-    if (c == null) {
-        System.out.println("Cliente no encontrado.");
-        return;
-    }
-
-    System.out.print("ID registrador: ");
-    String idReg = scanner.nextLine();
-    Registrador r = c.buscarRegistrador(idReg);
-    if (r == null) {
-        System.out.println("Registrador no encontrado.");
-        return;
-    }
-
-    System.out.print("Mes (1=enero...12=diciembre): ");
-    int mes = scanner.nextInt();
-    if (mes < 1 || mes > 12) {
-        System.out.println("Mes inválido.");
-        return;
-    }
-
-    int diasDelMes = r.getConsumo().getDiasDelMes(mes);
-    int dia;
-    do {
-        System.out.print("Día (1–" + diasDelMes + "): ");
-        dia = scanner.nextInt();
-        if (dia < 1 || dia > diasDelMes) {
-            System.out.println("Día inválido para este mes.");
+        System.out.print("ID cliente: ");
+        String id = scanner.nextLine();
+        Cliente c = sistema.buscarCliente(id);
+        if (c == null) {
+            System.out.println("Cliente no encontrado.");
+            return;
         }
-    } while (dia < 1 || dia > diasDelMes);
 
-    int hora;
-    do {
-        System.out.print("Hora (0–23): ");
-        hora = scanner.nextInt();
-        if (hora < 0 || hora > 23) {
-            System.out.println("Hora inválida.");
+        System.out.print("ID registrador: ");
+        String idReg = scanner.nextLine();
+        Registrador r = c.buscarRegistrador(idReg);
+        if (r == null) {
+            System.out.println("Registrador no encontrado.");
+            return;
         }
-    } while (hora < 0 || hora > 23);
 
-    System.out.print("Nuevo consumo (kWh): ");
-    int kw = scanner.nextInt();
+        System.out.print("Mes (1=enero...12=diciembre): ");
+        int mes = scanner.nextInt();
+        if (mes < 1 || mes > 12) {
+            System.out.println("Mes inválido.");
+            return;
+        }
 
-    r.getConsumo().modificarConsumoHora(mes, dia - 1, hora, kw);
-    System.out.println("Consumo actualizado.");
-}
+        int diasDelMes = r.getConsumo().getDiasDelMes(mes);
+        int dia;
+        do {
+            System.out.print("Día (1–" + diasDelMes + "): ");
+            dia = scanner.nextInt();
+            if (dia < 1 || dia > diasDelMes) {
+                System.out.println("Día inválido para este mes.");
+            }
+        } while (dia < 1 || dia > diasDelMes);
+
+        int hora;
+        do {
+            System.out.print("Hora (0–23): ");
+            hora = scanner.nextInt();
+            if (hora < 0 || hora > 23) {
+                System.out.println("Hora inválida.");
+            }
+        } while (hora < 0 || hora > 23);
+
+        System.out.print("Nuevo consumo (kWh): ");
+        int kw = scanner.nextInt();
+
+        r.getConsumo().modificarConsumoHora(mes, dia - 1, hora, kw);
+        System.out.println("Consumo actualizado.");
+    }
 
     private void generarFactura() {
         System.out.print("ID cliente: ");
@@ -187,8 +188,8 @@ public class ConsumoControlador {
             return;
         }
         String[] nombresMes = {
-            "enero", "febrero", "marzo", "abril", "mayo", "junio",
-            "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
+                "enero", "febrero", "marzo", "abril", "mayo", "junio",
+                "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
         };
         String nombreMes = nombresMes[mes - 1];
 

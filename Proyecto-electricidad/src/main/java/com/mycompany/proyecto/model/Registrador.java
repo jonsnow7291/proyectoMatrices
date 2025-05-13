@@ -1,4 +1,4 @@
-package model;
+package com.mycompany.proyecto.model;
 
 
 public class Registrador {

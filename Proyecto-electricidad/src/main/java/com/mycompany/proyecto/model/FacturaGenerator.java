@@ -1,4 +1,4 @@
-package model;
+package com.mycompany.proyecto.model;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -14,8 +14,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-import model.Cliente;
-import model.Registrador;
+import com.mycompany.proyecto.model.Cliente;
+import com.mycompany.proyecto.model.Registrador;
 
 public class FacturaGenerator {
 
@@ -50,7 +50,7 @@ public class FacturaGenerator {
             } else {
                 PdfPTable tabla = new PdfPTable(3); // ID, consumo, costo
                 tabla.setWidthPercentage(100);
-                tabla.setWidths(new int[]{2, 2, 2});
+                tabla.setWidths(new int[] { 2, 2, 2 });
                 tabla.addCell("Registrador");
                 tabla.addCell("Consumo (kWh)");
                 tabla.addCell("Costo ($)");
@@ -58,7 +58,8 @@ public class FacturaGenerator {
                 int total = 0;
 
                 for (Registrador r : registradores) {
-                    if (r == null || r.getConsumo() == null) continue;
+                    if (r == null || r.getConsumo() == null)
+                        continue;
 
                     int consumo = r.getConsumo().getConsumoMes(mes);
                     int costo = r.getConsumo().getCostoMes(mes);

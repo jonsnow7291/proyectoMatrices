@@ -1,6 +1,6 @@
-package view;
+package com.mycompany.proyecto.view;
 
-import controller.ConsumoControlador;
+import com.mycompany.proyecto.controller.ConsumoControlador;
 
 public class Main {
     public static void main(String[] args) {
