@@ -1,6 +1,7 @@
 package com.mycompany.proyecto.model;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Random;
 
 
 public class Consumo {
@@ -112,7 +113,12 @@ public class Consumo {
         consumo[mes - 1][dia][hora] = nuevoKw;
         costo[mes - 1][dia][hora] = calcularCosto(hora, nuevoKw);
     }
-
+public int[][] getConsumoMensual(int mes) {
+    if (mes < 1 || mes > 12) {
+        throw new IllegalArgumentException("El mes debe estar entre 1 y 12.");
+    }
+    return consumo[mes - 1]; // Retorna el consumo del mes (ajustado al índice 0)
+}
     public void generarDatos() {
         Random random = new Random();
         for (int mes = 0; mes < 12; mes++) {
@@ -126,4 +132,5 @@ public class Consumo {
             }
         }
     }
+    
 }

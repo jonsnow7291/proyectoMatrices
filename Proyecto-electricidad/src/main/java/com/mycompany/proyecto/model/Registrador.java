@@ -27,4 +27,5 @@ public class Registrador {
     public Consumo getConsumo() {
         return consumo;
     }
+    
 }

@@ -1,8 +1,10 @@
 package com.mycompany.proyecto.controller;
 
-import com.mycompany.proyecto.model.*;
-
 import java.util.Scanner;
+
+import com.mycompany.proyecto.model.Cliente;
+import com.mycompany.proyecto.model.FacturaGenerator;
+import com.mycompany.proyecto.model.Registrador;
 
 public class ConsumoControlador {
     private final SistemaEnergia sistema;
@@ -46,7 +48,6 @@ public class ConsumoControlador {
     }
 
     private void crearCliente() {
-        //? recolectamos los datos del cliente
         System.out.print("ID cliente: ");
         String id = scanner.nextLine();
         System.out.print("TipoIdentificación: ");
@@ -59,7 +60,6 @@ public class ConsumoControlador {
         String direccion = scanner.nextLine();
         System.out.print("Correo: ");
         String correo = scanner.nextLine();
-        // ? Hacemos manejo de excepciones
         try {
             sistema.agregarCliente(new Cliente(id, nombre, direccion, tIdent, correo, ciudad));
             System.out.println("Cliente creado.");
@@ -69,9 +69,7 @@ public class ConsumoControlador {
     }
 
     private void editarCliente() {
-        // ? aqui inicializamos la variable por default de registro
         boolean registrado = false;
-        //?recolectamos los datos a editar del cliente
         System.out.print("ID cliente a editar: ");
         String id = scanner.nextLine();
         System.out.print("Ingrese su Nuevo nombre: ");
@@ -82,7 +80,6 @@ public class ConsumoControlador {
         String ciudad = scanner.nextLine();
         System.out.print("Ingrese su Nueva Correo: ");
         String correo = scanner.nextLine();
-        // ? Hacemos manejo de excepciones
         try {
             registrado = sistema.editarCliente(id, nombre, direccion, correo, ciudad);
         } catch (Exception e) {
@@ -96,11 +93,9 @@ public class ConsumoControlador {
     }
 
     private void crearRegistrador() {
-        // ? aqui inicializamos las variables de ubicacion
         String ubicacion = "Desconocida";
         String direccion = "Desconocida";
         String ciudad = "Desconocida";
-        //?recolectamos los datos a registrar del registrador
         System.out.print("ID cliente: ");
         String idCliente = scanner.nextLine();
         System.out.print("ID registrador: ");
@@ -109,7 +104,6 @@ public class ConsumoControlador {
         System.out.println("1. Si");
         System.out.println("2. No");
         int respuesta = scanner.nextInt();
-        //? validamos  que el registrador se asocie al cliente o no por lo tanto asociando su ubicacion
         if (respuesta == 2) {
             System.out.print("Ubicación: ");
             ubicacion = scanner.nextLine();
@@ -128,7 +122,6 @@ public class ConsumoControlador {
     }
 
     private void editarRegistrador() {
-        //? recolectamos los datos a editar del registrador
         System.out.print("ID cliente: ");
         String idCliente = scanner.nextLine();
         System.out.print("ID registrador: ");
@@ -231,6 +224,7 @@ public class ConsumoControlador {
             System.out.println("Mes inválido.");
             return;
         }
+
         String[] nombresMes = {
                 "enero", "febrero", "marzo", "abril", "mayo", "junio",
                 "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
@@ -241,7 +235,24 @@ public class ConsumoControlador {
         System.out.print("Nombre archivo PDF (sin .pdf): ");
         String nombreArchivo = scanner.nextLine();
 
-        // Ajuste: se pasa también el nombre del mes al generador
-        FacturaGenerator.generarFactura(c, mes, nombreArchivo + ".pdf");
+        int diaMenorConsumo = -1;
+        int horaMenorConsumo = -1;
+        int menorConsumo = Integer.MAX_VALUE;
+
+        for (Registrador r : c.getRegistradores()) {
+            int[][] consumoMensual = r.getConsumo().getConsumoMensual(mes);
+            for (int dia = 0; dia < consumoMensual.length; dia++) {
+                for (int hora = 0; hora < consumoMensual[dia].length; hora++) {
+                    if (consumoMensual[dia][hora] < menorConsumo) {
+                        menorConsumo = consumoMensual[dia][hora];
+                        diaMenorConsumo = dia + 1;
+                        horaMenorConsumo = hora;
+                    }
+                }
+            }
+        }
+
+        
+        FacturaGenerator.generarFactura(c, mes, nombreArchivo + ".pdf", diaMenorConsumo, horaMenorConsumo, menorConsumo);
     }
 }

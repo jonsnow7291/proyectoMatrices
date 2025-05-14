@@ -1,21 +1,21 @@
 package com.mycompany.proyecto.model;
 
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.Chunk;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.pdf.PdfWriter;
-import com.itextpdf.text.pdf.PdfPTable;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+
 public class FacturaGenerator {
 
-    public static void generarFactura(Cliente cliente, int mes, String archivoSalida) {
+    public static void generarFactura(Cliente cliente, int mes, String archivoSalida, int diaMenorConsumo, int horaMenorConsumo, int menorConsumo) {
         if (archivoSalida == null || archivoSalida.isEmpty()) {
             throw new IllegalArgumentException("El archivo de salida no puede ser nulo o vacío.");
         }
@@ -74,6 +74,13 @@ public class FacturaGenerator {
                 totalP.setAlignment(Element.ALIGN_RIGHT);
                 document.add(totalP);
             }
+
+            // Agregar información del menor consumo
+            document.add(Chunk.NEWLINE);
+            document.add(new Paragraph("Información del menor consumo:", new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD)));
+            document.add(new Paragraph("Día con menor consumo: " + diaMenorConsumo));
+            document.add(new Paragraph("Hora con menor consumo: " + horaMenorConsumo));
+            document.add(new Paragraph("Consumo mínimo: " + menorConsumo + " kWh"));
 
             System.out.println("Factura generada en: " + archivoSalida);
         } catch (DocumentException | IOException e) {
