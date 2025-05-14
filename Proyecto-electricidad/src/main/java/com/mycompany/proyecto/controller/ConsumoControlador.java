@@ -140,6 +140,11 @@ public class ConsumoControlador {
         System.out.print("ID cliente: ");
         String id = scanner.nextLine();
         Cliente c = sistema.buscarCliente(id);
+        if (c != null)
+            System.out.println("Cliente encontrado.");
+        else
+            System.out.println("Cliente no encontrado.");
+
         if (c != null) {
             for (Registrador r : c.getRegistradores()) {
                 r.getConsumo().generarDatos();
@@ -216,6 +221,8 @@ public class ConsumoControlador {
         if (c == null) {
             System.out.println("Cliente no encontrado.");
             return;
+        } else {
+            System.out.println("Cliente encontrado.");
         }
 
         System.out.print("Mes (1=enero...12=diciembre): ");
@@ -237,7 +244,10 @@ public class ConsumoControlador {
 
         int diaMenorConsumo = -1;
         int horaMenorConsumo = -1;
+        int diaMayorConsumo = -1;
+        int horaMayorConsumo = -1;
         int menorConsumo = Integer.MAX_VALUE;
+        int mayorConsumo = Integer.MIN_VALUE;
 
         for (Registrador r : c.getRegistradores()) {
             int[][] consumoMensual = r.getConsumo().getConsumoMensual(mes);
@@ -248,11 +258,17 @@ public class ConsumoControlador {
                         diaMenorConsumo = dia + 1;
                         horaMenorConsumo = hora;
                     }
+                    if (consumoMensual[dia][hora] > mayorConsumo) {
+                        mayorConsumo = consumoMensual[dia][hora];
+                        diaMayorConsumo = dia + 1;
+                        horaMayorConsumo = hora;
+                    }
                 }
             }
         }
 
-        
-        FacturaGenerator.generarFactura(c, mes, nombreArchivo + ".pdf", diaMenorConsumo, horaMenorConsumo, menorConsumo);
+        FacturaGenerator.generarFactura(c, mes, nombreArchivo + ".pdf", diaMenorConsumo, horaMenorConsumo, menorConsumo,
+                diaMayorConsumo, horaMayorConsumo, mayorConsumo);
+        System.out.println("Factura generada: " + nombreArchivo + ".pdf");
     }
 }

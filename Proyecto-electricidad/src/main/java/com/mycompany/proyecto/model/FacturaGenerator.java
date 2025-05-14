@@ -15,7 +15,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 public class FacturaGenerator {
 
-    public static void generarFactura(Cliente cliente, int mes, String archivoSalida, int diaMenorConsumo, int horaMenorConsumo, int menorConsumo) {
+    public static void generarFactura(Cliente cliente, int mes, String archivoSalida, int diaMenorConsumo, int horaMenorConsumo, int menorConsumo, int diaMayorConsumo, int horaMayorConsumo, int MayorConsumo) {
         if (archivoSalida == null || archivoSalida.isEmpty()) {
             throw new IllegalArgumentException("El archivo de salida no puede ser nulo o vacío.");
         }
@@ -81,6 +81,12 @@ public class FacturaGenerator {
             document.add(new Paragraph("Día con menor consumo: " + diaMenorConsumo));
             document.add(new Paragraph("Hora con menor consumo: " + horaMenorConsumo));
             document.add(new Paragraph("Consumo mínimo: " + menorConsumo + " kWh"));
+            document.add(Chunk.NEWLINE);
+            document.add(new Paragraph("Información del mayor consumo:", new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD)));
+            document.add(new Paragraph("Día con mayor consumo: " + diaMayorConsumo));
+            document.add(new Paragraph("Hora con mayor consumo: " + horaMayorConsumo));
+            document.add(new Paragraph("Consumo Maximo: " + MayorConsumo + " kWh"));
+            
 
             System.out.println("Factura generada en: " + archivoSalida);
         } catch (DocumentException | IOException e) {
