@@ -47,7 +47,7 @@ public class ConsumoControlador {
                 case 10 -> System.out.println("Saliendo...");
                 default -> System.out.println("Opción inválida.");
             }
-        } while (opcion != 9);
+        } while (opcion != 10);
     }
 
     private void crearCliente() {
@@ -270,12 +270,15 @@ public class ConsumoControlador {
             for (int i = HoraDeInicio; i <= HoraDeFin; i++) {
                 franjas[i] = consumoMensual[dia - 1][i];
             }
+            int sumaDeHoras = 0;
             System.out.println("El consumo de la franja horaria es:");
             for (int i = HoraDeInicio; i <= HoraDeFin; i++) {
                 System.out.println("Hora " + i + ": " + franjas[i] + " kWh");
+                sumaDeHoras += franjas[i];
             }
-            System.out.println("El consumo total de la franja horaria es: " + (franjas[HoraDeFin] - franjas[HoraDeInicio]) + " kWh");
-            
+            System.out.println("El consumo total de la franja horaria del mes " + mes + ", el dia " + dia
+                    + ",entre las " + HoraDeInicio + ",y las " + HoraDeFin + " es: " + sumaDeHoras + " kWh");
+
         } catch (Exception ex) {
             System.out.println("Error al ingresar las horas, error: " + ex.getMessage());
         }
