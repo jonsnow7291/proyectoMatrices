@@ -3,6 +3,7 @@ package com.mycompany.proyecto.controller;
 import java.util.Scanner;
 
 import com.mycompany.proyecto.model.Cliente;
+import com.mycompany.proyecto.model.Consumo;
 import com.mycompany.proyecto.model.FacturaGenerator;
 import com.mycompany.proyecto.model.Registrador;
 
@@ -41,7 +42,8 @@ public class ConsumoControlador {
                 case 6 -> cargarConsumoTodos();
                 case 7 -> modificarConsumoHora();
                 case 8 -> generarFactura();
-                case 9 -> System.out.println("Saliendo...");
+                case 9 -> consumoPorFranjas();
+                case 10 -> System.out.println("Saliendo...");
                 default -> System.out.println("Opción inválida.");
             }
         } while (opcion != 9);
@@ -212,6 +214,62 @@ public class ConsumoControlador {
 
         r.getConsumo().modificarConsumoHora(mes, dia - 1, hora, kw);
         System.out.println("Consumo actualizado.");
+    }
+    
+    private void consumoPorFranjas(){
+        System.out.println("Ingrese el Id del cliente :");
+        String id = "0";
+        try{
+        id = scanner.nextLine();
+        }catch (Exception e){
+            System.out.println("Error al ingresar el id del cliente error: "+ e.getMessage());
+        }
+        Cliente c =  sistema.buscarCliente(id);
+        if (c == null) {
+            System.out.println("Cliente no encontrado.");
+            return;
+        } else {
+            System.out.println("Cliente encontrado.");
+        }
+        System.out.println("Ingrese el mes (1-12):");
+        int mes = 0;
+        try{
+        mes = scanner.nextInt();
+        }catch (Exception e){
+            System.out.println("Error al ingresar el mes error: " + e.getMessage());
+        }
+        if (mes < 1 || mes > 12) {
+            System.out.println("Mes inválido.");
+            return;
+        }
+        System.out.println("Ingrese el dia (1-31):");
+        int dia = 0;
+        try{
+        dia = scanner.nextInt();
+        }catch(Exception ex ){
+            System.out.println("Error al ingresar el dia, error: " + ex.getMessage());
+        }
+        Consumo consumo = c.getRegistradores().get(0).getConsumo();
+        int[][] consumoMensual = consumo.getConsumoMensual(mes);
+        int[] franjas = new int[consumoMensual[dia - 1].length];
+        // se debe de hacer profranja horaria
+        System.out.println("Ahora haremos el Consumo por franjas horarias:");
+        int HoraDeInicio = 0;
+        int HoraDeFin = 0;
+        try{
+            System.out.println("Ingrese la hora de inicio (0-23):");
+            HoraDeInicio = scanner.nextInt();
+            System.out.println("Ingrese la hora de fin (0-23):");
+            HoraDeFin = scanner.nextInt();
+            for (int i = HoraDeInicio; i <= HoraDeFin; i++) {
+                franjas[i] = consumoMensual[dia - 1][i];
+            }
+        }catch( Exception ex ){
+            System.out.println("Error al ingresar las horas, error: " + ex.getMessage());
+        }
+
+        
+
     }
 
     private void generarFactura() {

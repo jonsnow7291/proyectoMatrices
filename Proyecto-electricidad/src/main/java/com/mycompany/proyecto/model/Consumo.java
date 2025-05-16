@@ -41,6 +41,9 @@ public class Consumo {
         }
         return kw * precioPorKw;
     }
+    public int[] getDiasPorMes() {
+        return diasPorMes;
+    }
 
     public int[] getConsumoPorHora(int mes, int dia) {
         return consumo[mes - 1][dia];
